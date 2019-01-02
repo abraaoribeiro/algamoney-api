@@ -45,7 +45,7 @@ public class CategoriaResource {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Categoria> buscarPeloId(@PathVariable Long id, HttpServletResponse response) {
+	public ResponseEntity<Categoria> buscarPeloId(@PathVariable Long id) {
 		Categoria categoria = categoriaRepository.findOne(id);
 		return categoria != null ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
 		

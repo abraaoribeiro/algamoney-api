@@ -52,7 +52,7 @@ public class PessoaResource {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Pessoa> buscarPeloId(@PathVariable Long id, HttpServletResponse response) {
+	public ResponseEntity<Pessoa> buscarPeloId(@PathVariable Long id) {
 		Pessoa pessoa = pessoaRepository.findOne(id);
 		return pessoa != null ? ResponseEntity.ok(pessoa) : ResponseEntity.notFound().build();
 
