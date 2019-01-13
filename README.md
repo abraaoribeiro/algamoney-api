@@ -1,1 +1,1 @@
-# algamoney-api
+# Algamoney-api
