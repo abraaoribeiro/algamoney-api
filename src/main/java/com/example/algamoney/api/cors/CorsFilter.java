@@ -11,6 +11,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -21,27 +22,28 @@ import com.example.algamoney.api.config.property.AlgamoneyApiProperty;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorsFilter implements Filter {
 
+	@Autowired
 	private AlgamoneyApiProperty algamoneyApiProperty;
 	
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
 
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse resp = (HttpServletResponse) response;
+		HttpServletRequest request = (HttpServletRequest) req;
+		HttpServletResponse response = (HttpServletResponse) resp;
 		
-		resp.setHeader("Access-Control-Allw-Origin", algamoneyApiProperty.getOriginPermitida());
-		resp.setHeader("Access-Control-Allw-Credentials", "true");
+		response.setHeader("Access-Control-Allow-Origin", algamoneyApiProperty.getOriginPermitida());
+		response.setHeader("Access-Control-Allow-Credentials", "true");
 		
-		if("OPTIONS".equals(req.getMethod()) && algamoneyApiProperty.getOriginPermitida().equals(req.getHeader("Origin"))) {
-			resp.setHeader("Access-Control-Allw-Methods", "POST,GET,DELETE, PUT, OPTIONS");
-			resp.setHeader("Access-Control-Allw-Headers", "Authorization, Content_Type,Accept");
-			resp.setHeader("Access-Control-Allw-Max-Age", "3600");
+		if("OPTIONS".equals(request.getMethod()) && algamoneyApiProperty.getOriginPermitida().equals(request.getHeader("Origin"))) {
+			response.setHeader("Access-Control-Allow-Methods", "POST,GET,DELETE, PUT, OPTIONS");
+			response.setHeader("Access-Control-Allow-Headers", "Authorization, Content_Type,Accept");
+			response.setHeader("Access-Control-Allow-Max-Age", "3600");
 			
-			resp.setStatus(HttpServletResponse.SC_OK);
+			response.setStatus(HttpServletResponse.SC_OK);
 		}else {
 			
-			chain.doFilter(request, response);
+			chain.doFilter(req, resp);
 		}
 
 	}
