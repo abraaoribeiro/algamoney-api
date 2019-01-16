@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 
 import com.example.algamoney.api.security.UsuarioSistema;
 
-public class CustomTokenEnhance implements TokenEnhancer{
+public class CustomTokenEnhancer implements TokenEnhancer{
 
 	@Override
 	public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
