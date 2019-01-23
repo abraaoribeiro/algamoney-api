@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.algamoney.api.event.RecursoCriadoEvent;
 import com.example.algamoney.api.model.Pessoa;
 import com.example.algamoney.api.repository.PessoaRepository;
-import com.example.algamoney.api.repository.filter.PessoaFilter;
 import com.example.algamoney.api.service.PessoaService;
 
 @RestController
@@ -40,10 +40,11 @@ public class PessoaResource {
 	private PessoaService pessoaService;
 
 	
+
 	@GetMapping
-	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
-	public Page<Pessoa> pesquisar(PessoaFilter pessoaFilter, Pageable pageable) {
-	return pessoaRepository.filtrar(pessoaFilter, pageable);
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA')")
+	public Page<Pessoa> pesquisar(@RequestParam(required = false, defaultValue = "%") String nome, Pageable pageable) {
+		return pessoaRepository.findByNomeContaining(nome, pageable);
 	}
 
 	@PostMapping
