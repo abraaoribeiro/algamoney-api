@@ -24,13 +24,13 @@ public class LancamentoService {
 		return lancamentoRepository.save(lancamento);
 	}
 	
-	public Lancamento atualizar(Long id, Lancamento lancamento) {
-		Lancamento lancamentoSalvo = buscarLancamentoExistente(id);
+	public Lancamento atualizar(Long codigo, Lancamento lancamento) {
+		Lancamento lancamentoSalvo = buscarLancamentoExistente(codigo);
 		if (!lancamento.getPessoa().equals(lancamentoSalvo.getPessoa())) {
 			validarPessoa(lancamento);
 		}
 
-		BeanUtils.copyProperties(lancamento, lancamentoSalvo, "id");
+		BeanUtils.copyProperties(lancamento, lancamentoSalvo, "codigo");
 
 		return lancamentoRepository.save(lancamentoSalvo);
 	}
@@ -46,15 +46,13 @@ public class LancamentoService {
 		}
 	}
 
-	private Lancamento buscarLancamentoExistente(Long id) {
-		Lancamento lancamentoSalvo = lancamentoRepository.findOne(id);
+	private Lancamento buscarLancamentoExistente(Long codigo) {
+		Lancamento lancamentoSalvo = lancamentoRepository.findOne(codigo);
 		if (lancamentoSalvo == null) {
 			throw new IllegalArgumentException();
 		}
 		return lancamentoSalvo;
 	}
-
-
 	
 	
 }
