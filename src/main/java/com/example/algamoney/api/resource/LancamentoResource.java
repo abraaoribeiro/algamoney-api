@@ -35,8 +35,11 @@ import com.example.algamoney.api.repository.projection.ResumoLancamento;
 import com.example.algamoney.api.service.LancamentoService;
 import com.example.algamoney.api.service.exception.PessoaInexistenteOuInativaException;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 @RestController
 @RequestMapping("/lancamentos")
+@CrossOrigin(origins = "*")
 public class LancamentoResource {
 
 	@Autowired

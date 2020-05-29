@@ -25,9 +25,11 @@ import com.example.algamoney.api.event.RecursoCriadoEvent;
 import com.example.algamoney.api.model.Pessoa;
 import com.example.algamoney.api.repository.PessoaRepository;
 import com.example.algamoney.api.service.PessoaService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("/pessoas")
+@CrossOrigin(origins = "http://localhost:4200")
 public class PessoaResource {
 
 	@Autowired
