@@ -1,17 +1,18 @@
 package com.example.algamoney.api.mail;
 
-//import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.context.event.ApplicationReadyEvent;
-//import org.springframework.context.event.EventListener;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 @Component
 public class Mailer {
@@ -19,13 +20,41 @@ public class Mailer {
 	@Autowired
 	private JavaMailSender mailSender;
 
-	/*@EventListener
-	private void teste(ApplicationReadyEvent event) {
-		this.enviarEmail("testes.algaworks@gmail.com", Arrays.asList("abraaohdg@gmail.com"), "Email de Teste", "Olá <br/> Teste ok.");
-	System.out.println("Terminado o envio de email...");
-	}*/
-	
-	
+	@Autowired
+	private TemplateEngine thymeleaf;
+
+//	@Autowired
+//	private LancamentoRepository lancamentoRepository;
+
+//	@EventListener
+//	private void teste(ApplicationReadyEvent event) {
+//		String template = "mail/aviso-lancamento-vencidos";
+//
+//		List<Lancamento> lancamentos = lancamentoRepository.findAll();
+//
+//		Map<String, Object> variaveis = new HashedMap();
+//		variaveis.put("lancamentos", lancamentos);
+//
+//		this.enviarEmail("teste.algaworks@gmail.com", Arrays.asList("abraaohdg@gmail.com"), "Testando", template,
+//				variaveis);
+//
+//		System.out.println("Envio de emaill...");
+//
+//	}
+
+	public void enviarEmail(String remetente, List<String> destinatarios, String assunto, String template,
+			Map<String, Object> variaveis) {
+
+		Context context = new Context(new Locale("pt", "BR"));
+
+		variaveis.entrySet().forEach(e -> context.setVariable(e.getKey(), e.getValue()));
+
+		String mensagem = thymeleaf.process(template, context);
+
+		this.enviarEmail(remetente, destinatarios, assunto, mensagem);
+
+	}
+
 	public void enviarEmail(String remetente, List<String> destinatarios, String assunto, String messagem) {
 
 		try {
