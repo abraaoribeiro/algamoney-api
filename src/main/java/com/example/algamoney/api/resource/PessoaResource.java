@@ -52,7 +52,7 @@ public class PessoaResource {
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA') and #oauth2.hasScope('write')")
 	public ResponseEntity<Pessoa> criar(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response) {
-		Pessoa pessoaSalva = pessoaRepository.save(pessoa);
+		Pessoa pessoaSalva = pessoaService.salva(pessoa);
 
 		// This está se referênciando a classe geradora ou seja a classe atual
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaSalva.getId()));
