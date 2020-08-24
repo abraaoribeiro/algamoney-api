@@ -51,7 +51,7 @@ public class LancamentoService {
 
 	@Autowired
 	private Mailer mailer;
-	
+
 	@Autowired
 	private S3 s3;
 
@@ -100,8 +100,8 @@ public class LancamentoService {
 
 	public Lancamento salvar(Lancamento lancamento) {
 		validarPessoa(lancamento);
-		if(StringUtils.hasText(lancamento.getAnexo())) {
-			S3.salvar(lancamento.getAnexo());
+		if (StringUtils.hasText(lancamento.getAnexo())) {
+			s3.salvar(lancamento.getAnexo());
 		}
 		return lancamentoRepository.save(lancamento);
 	}
@@ -110,6 +110,13 @@ public class LancamentoService {
 		Lancamento lancamentoSalvo = buscarLancamentoExistente(codigo);
 		if (!lancamento.getPessoa().equals(lancamentoSalvo.getPessoa())) {
 			validarPessoa(lancamento);
+		}
+
+		if (StringUtils.isEmpty(lancamento.getAnexo()) && StringUtils.hasText(lancamentoSalvo.getAnexo())) {
+			s3.remover(lancamentoSalvo.getAnexo());
+		} else if (StringUtils.hasLength(lancamento.getAnexo())
+				&& !lancamento.getAnexo().equals(lancamentoSalvo.getAnexo())) {
+			s3.substituir(lancamentoSalvo.getAnexo(), lancamento.getAnexo());
 		}
 
 		BeanUtils.copyProperties(lancamento, lancamentoSalvo, "codigo");
