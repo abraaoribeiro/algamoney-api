@@ -70,7 +70,7 @@ public class LancamentoResource {
 
 	@PostMapping("/anexo")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO') and #oauth2.hasScope('write')")
-	public Anexo uploadAnexo(@RequestParam MultipartFile anexo) throws IOException {
+	public Anexo uploadAnexo(@RequestParam("anexo") MultipartFile anexo) throws IOException {
 		String nome = s3.salvarTemporariamente(anexo);
 		
 		return new Anexo(nome, s3.configurarUrl(nome));
