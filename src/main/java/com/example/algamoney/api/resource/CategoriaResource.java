@@ -1,6 +1,7 @@
 package com.example.algamoney.api.resource;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -50,8 +51,8 @@ public class CategoriaResource {
 	@GetMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA') and #oauth2.hasScope('read')")
 	public ResponseEntity<Categoria> buscarPeloId(@PathVariable Long id) {
-		Categoria categoria = categoriaRepository.findOne(id);
-		return categoria != null ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
+		Optional<Categoria> categoria = categoriaRepository.findById(id);
+		return categoria.isPresent() ? ResponseEntity.ok(categoria.get()) : ResponseEntity.notFound().build();
 		
 	}
 }
